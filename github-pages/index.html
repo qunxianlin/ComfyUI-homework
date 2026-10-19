@@ -1,268 +1,33 @@
 <!doctype html>
 <html lang="zh-TW">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ComfyUI 作業展示 - 人像背景替換</title>
-  <style>
-    :root {
-      --primary: #2563eb;
-      --primary-hover: #1d4ed8;
-      --bg: #f8fafc;
-      --card-bg: #ffffff;
-      --text: #1e293b;
-      --text-muted: #64748b;
-      --border: #e2e8f0;
-      --radius: 12px;
-      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    }
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      padding: 2rem 1rem;
-    }
-    .container {
-      max-width: 960px;
-      margin: 0 auto;
-    }
-    header {
-      text-align: center;
-      margin-bottom: 2.5rem;
-    }
-    header h1 {
-      font-size: 2.2rem;
-      font-weight: 800;
-      color: #0f172a;
-      margin-bottom: 0.5rem;
-    }
-    header p {
-      color: var(--text-muted);
-      font-size: 1.05rem;
-    }
-    .card {
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
-      padding: 1.75rem;
-      margin-bottom: 2rem;
-    }
-    .card h2 {
-      font-size: 1.35rem;
-      margin-bottom: 1rem;
-      color: #0f172a;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .intro-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      font-size: 1.05rem;
-    }
-    .intro-list li {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.5rem;
-    }
-    .intro-list li::before {
-      content: "✦";
-      color: var(--primary);
-      font-weight: bold;
-    }
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.5rem;
-      margin-top: 1rem;
-    }
-    .gallery-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: #f1f5f9;
-      border-radius: 8px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-    }
-    .gallery-item img {
-      width: 100%;
-      height: 340px;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.2s ease;
-      cursor: zoom-in;
-    }
-    .gallery-item img:hover {
-      transform: scale(1.02);
-    }
-    .gallery-item .label {
-      padding: 0.6rem 1rem;
-      font-weight: 600;
-      color: #334155;
-      font-size: 0.95rem;
-      background: #ffffff;
-      width: 100%;
-      text-align: center;
-      border-top: 1px solid var(--border);
-    }
-    .workflow-img-wrapper {
-      margin-top: 1rem;
-      text-align: center;
-      background: #f1f5f9;
-      padding: 0.75rem;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-    }
-    .workflow-img-wrapper img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 6px;
-      display: block;
-      margin: 0 auto;
-    }
-    .prompt-box {
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      border-left: 4px solid var(--primary);
-      border-radius: 6px;
-      padding: 1rem 1.25rem;
-      margin-bottom: 1.25rem;
-    }
-    .prompt-box.negative {
-      border-left-color: #ef4444;
-    }
-    .prompt-label {
-      font-weight: 700;
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 0.35rem;
-      color: #475569;
-    }
-    .prompt-content {
-      font-size: 0.95rem;
-      color: #1e293b;
-      word-break: break-word;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    }
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      align-items: center;
-      margin-top: 1.5rem;
-    }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background-color: var(--primary);
-      color: #ffffff;
-      padding: 0.75rem 1.5rem;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: background-color 0.2s;
-    }
-    .btn:hover {
-      background-color: var(--primary-hover);
-    }
-    .btn svg {
-      width: 18px;
-      height: 18px;
-      fill: currentColor;
-    }
-    footer {
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      margin-top: 3rem;
-      padding-bottom: 2rem;
-    }
-  </style>
+<meta charset="utf-8">
+<title>我的作業</title>
 </head>
 <body>
 
-  <div class="container">
-    <header>
-      <h1>ComfyUI 人像背景替換作業</h1>
-      <p>保留人物特徵，利用遮罩將背景替換為紐約時代廣場</p>
-    </header>
+<h1>我的作業</h1>
 
-    <!-- 成果對比 -->
-    <section class="card">
-      <h2>效果對比</h2>
-      <div class="gallery">
-        <div class="gallery-item">
-          <img src="images/原圖.jpg" alt="原圖">
-          <div class="label">原圖 (Original)</div>
-        </div>
-        <div class="gallery-item">
-          <img src="images/遮罩.png" alt="遮罩">
-          <div class="label">遮罩 (Mask)</div>
-        </div>
-        <div class="gallery-item">
-          <img src="images/結果.png" alt="生成的圖">
-          <div class="label">生成的圖 (Result)</div>
-        </div>
-      </div>
-    </section>
+<p>原圖：</p>
+<img src="images/原圖.jpg" width="250">
 
-    <!-- 實驗說明 -->
-    <section class="card">
-      <h2>製作心得與說明</h2>
-      <ul class="intro-list">
-        <li>我把背景換成了紐約時代廣場，人沒有變。</li>
-        <li>一開始臉會變，後來用了遮罩，只改背景，臉就保留下來了。</li>
-        <li>Denoise（降噪幅度）用的是 <strong>0.9</strong>。</li>
-      </ul>
-    </section>
+<p>生成的圖：</p>
+<img src="images/結果.png" width="250">
 
-    <!-- 提示詞設定 -->
-    <section class="card">
-      <h2>提示詞 (Prompts)</h2>
-      
-      <div class="prompt-box">
-        <div class="prompt-label">正面提示詞 (Positive Prompt)</div>
-        <div class="prompt-content">photorealistic, color photo, vivid natural colors, a young woman standing in Times Square, New York City, huge glowing LED billboards and colorful neon advertisements, tall skyscrapers, yellow taxi cabs, busy city atmosphere in the background, daytime, soft natural daylight, cinematic lighting, shallow depth of field, blurred background, highly detailed, realistic</div>
-      </div>
+<p>我把背景換成了紐約時代廣場，人沒有變。</p>
 
-      <div class="prompt-box negative">
-        <div class="prompt-label" style="color: #b91c1c;">負面提示詞 (Negative Prompt)</div>
-        <div class="prompt-content">(worst quality, low quality:1.4), black and white, monochrome, grayscale, lowres, blurry foreground, cartoon, anime, illustration, text, watermark, logo, signature, distorted buildings, bad perspective, deformed, extra people, crowd in front, jpeg artifacts, oversaturated</div>
-      </div>
-    </section>
+<p>一開始臉會變，後來用了遮罩，只改背景，臉就保留下來了。</p>
 
-    <!-- 完整工作流 -->
-    <section class="card">
-      <h2>完整工作流 (Workflow)</h2>
-      <div class="workflow-img-wrapper">
-        <a href="images/工作流截圖.png" target="_blank" title="點擊查看大圖">
-          <img src="images/工作流截圖.png" alt="完整工作流截圖">
-        </a>
-      </div>
-      <div class="actions">
-        <a class="btn" href="我的工作流.json" download="我的工作流.json">
-          <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-          下載工作流檔案 (.json)
-        </a>
-      </div>
-    </section>
+<p>完整工作流截圖：</p>
+<img src="images/工作流截圖.png" width="700">
 
-    <footer>
-      <p>ComfyUI 練習作業 &bull; Powered by GitHub Pages</p>
-    </footer>
-  </div>
+<p>正面提示詞：photorealistic, color photo, vivid natural colors, a young woman standing in Times Square, New York City, huge glowing LED billboards and colorful neon advertisements, tall skyscrapers, yellow taxi cabs, busy city atmosphere in the background, daytime, soft natural daylight, cinematic lighting, shallow depth of field, blurred background, highly detailed, realistic</p>
+
+<p>負面提示詞：(worst quality, low quality:1.4), black and white, monochrome, grayscale, lowres, blurry foreground, cartoon, anime, illustration, text, watermark, logo, signature, distorted buildings, bad perspective, deformed, extra people, crowd in front, jpeg artifacts, oversaturated</p>
+
+<p>denoise 用的是 0.9。</p>
+
+<p><a href="我的工作流.json">workflow 檔案</a></p>
 
 </body>
 </html>
